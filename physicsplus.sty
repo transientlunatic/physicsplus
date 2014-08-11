@@ -1,0 +1,164 @@
+\ProvidesPackage{danielphysics}
+\usepackage{amssymb}					% AMS Symbol Font
+\usepackage{latexsym}					% LaTeX Symbol Font
+\usepackage{amsmath}					% For Mathematics Markup
+\usepackage{color}					% Coloured Text
+\usepackage[usenames,dvipsnames]{xcolor}
+\let\proof\relax
+\let\endproof\relax
+\usepackage{amsthm}
+\usepackage[amssymb,derived,derivedinbase]{SIunits}	% Proper setting of SI Units
+\usepackage{hyperref}
+\usepackage{esint}                                      % Provides extra integral signs
+\usepackage{graphicx, tikz, float}
+\usepackage{pgfplots}
+\usepackage{ifthen, ifluatex}
+\usepackage{environ}
+\usepackage{physics}
+\usepackage[tikz]{mdframed}
+%%% COLOURS
+\definecolor{eqncolour}{HTML}{9d261d}
+\definecolor{defcolour}{HTML}{049cdb}
+\definecolor{lawcolour}{HTML}{46a546}
+% Accent Colour set
+\definecolor{accent-pink}{HTML}{C3325F}
+\definecolor{accent-red}{HTML}{9d261d}
+\definecolor{accent-purple}{HTML}{7a43b6}
+\definecolor{accent-yellow}{HTML}{FFc40d}
+\definecolor{accent-green}{HTML}{46a546}
+\definecolor{accent-blue}{HTML}{049cdb}
+\definecolor{accent-orange}{HTML}{F89406}
+% Fake Tartan Set
+\definecolor{tartan-darkgreen}{HTML}{266F0D}
+\definecolor{tartan-lightgreen}{HTML}{6DD593}
+\definecolor{tartan-green}{HTML}{02A23C}
+\definecolor{tartan-purple}{HTML}{6C2D7C}
+\definecolor{tartan-blue}{HTML}{5702A2}
+% Muted Colour set
+\definecolor{muted-blue}{HTML}{195073}
+\definecolor{muted-green}{HTML}{7F8C1F}
+\definecolor{muted-orange}{HTML}{EE913F}
+\definecolor{muted-cream}{HTML}{F2E5BD}
+\definecolor{muted-egg}{HTML}{9FD7C7}
+% Bits and bobs
+\definecolor{shiver}{HTML}{EBF9FB}
+%%% MACROS FOR MATHEMATICS
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}	% Draw the Scientific Notation Exponent
+\providecommand{\dif}[1]{\ensuremath{\,\mathrm{d}{#1}}}	% Draw the infinitesimal marker
+\providecommand{\difp}[2]{\ensuremath{\, \mathrm{d}^{{#1}}{#2}}} % Draw an inf marker risen to a power
+\providecommand{\set}[1]{\ensuremath{ \{ #1 \} }}
+%%% MACROS FOR PHYSICS
+\providecommand{\fermi}{\ensuremath{ {\rm F} } }
+\providecommand{\kbolt}{\ensuremath{ k_{\rm B}}}
+\providecommand{\avogadro}{\ensuremath{ N_{\rm A}}}
+\providecommand{\half}{\ensuremath{\frac{1}{2}}}
+\providecommand{\muz}{\ensuremath{\mu_0}}
+\providecommand{\muB}{\ensuremath{\mu_{\rm B}}}
+% Particle Physics
+\providecommand{\electron}{\ensuremath{{\rm e}^-}}
+\providecommand{\neutelectron}{\ensuremath{\nu_{{\rm e}^-}}}
+\providecommand{\muon}{\ensuremath{\mu}}
+\providecommand{\neutmuon}{\ensuremath{\nu_{\mu}}}
+\providecommand{\tauon}{\ensuremath{\tau}}
+\providecommand{\neuttauon}{\ensuremath{\nu_{\tau}}}
+
+
+%%% LINEAR ALGEBRA
+\providecommand{\vs}[1]{\ensuremath{\mathsf{#1}}}
+\DeclareMathOperator{\diag}{diag}
+\providecommand{\trans}[1]{\ensuremath{#1^{\mathsf{T}}}}
+\DeclareMathOperator{\idmap}{Id}
+\DeclareMathOperator{\img}{im}
+\DeclareMathOperator{\nullity}{n}
+\DeclareMathOperator{\conj}{conj}
+\DeclareMathOperator{\Eig}{Eig}
+%\providecommand{\conj}[1]{\ensuremath{\overbar{#1}}}
+
+% Journal name macros
+\let\jnl@style=\rmfamily 
+\def\ref@jnl#1{{\jnl@style#1}}% 
+\newcommand\aj{\ref@jnl{AJ}}%        % Astronomical Journal 
+\newcommand\araa{\ref@jnl{ARA\&A}}%  % Annual Review of Astron and Astrophys 
+\newcommand\apj{\ref@jnl{ApJ}}%    % Astrophysical Journal 
+\newcommand\apjl{\ref@jnl{ApJ}}%     % Astrophysical Journal, Letters 
+\newcommand\apjs{\ref@jnl{ApJS}}%    % Astrophysical Journal, Supplement 
+\newcommand\ao{\ref@jnl{Appl.~Opt.}}%   % Applied Optics 
+\newcommand\apss{\ref@jnl{Ap\&SS}}%  % Astrophysics and Space Science 
+\newcommand\aap{\ref@jnl{A\&A}}%     % Astronomy and Astrophysics 
+\newcommand\aapr{\ref@jnl{A\&A~Rev.}}%  % Astronomy and Astrophysics Reviews 
+\newcommand\aaps{\ref@jnl{A\&AS}}%    % Astronomy and Astrophysics, Supplement 
+\newcommand\azh{\ref@jnl{AZh}}%       % Astronomicheskii Zhurnal 
+\newcommand\baas{\ref@jnl{BAAS}}%     % Bulletin of the AAS 
+\newcommand\icarus{\ref@jnl{Icarus}}% % Icarus
+\newcommand\jrasc{\ref@jnl{JRASC}}%   % Journal of the RAS of Canada 
+\newcommand\memras{\ref@jnl{MmRAS}}%  % Memoirs of the RAS 
+\newcommand\mnras{\ref@jnl{MNRAS}}%   % Monthly Notices of the RAS 
+\newcommand\pra{\ref@jnl{Phys.~Rev.~A}}% % Physical Review A: General Physics 
+\newcommand\prb{\ref@jnl{Phys.~Rev.~B}}% % Physical Review B: Solid State 
+\newcommand\prc{\ref@jnl{Phys.~Rev.~C}}% % Physical Review C 
+\newcommand\prd{\ref@jnl{Phys.~Rev.~D}}% % Physical Review D 
+\newcommand\pre{\ref@jnl{Phys.~Rev.~E}}% % Physical Review E 
+\newcommand\prl{\ref@jnl{Phys.~Rev.~Lett.}}% % Physical Review Letters 
+\newcommand\pasp{\ref@jnl{PASP}}%     % Publications of the ASP 
+\newcommand\pasj{\ref@jnl{PASJ}}%     % Publications of the ASJ 
+\newcommand\qjras{\ref@jnl{QJRAS}}%   % Quarterly Journal of the RAS 
+\newcommand\skytel{\ref@jnl{S\&T}}%   % Sky and Telescope 
+\newcommand\solphys{\ref@jnl{Sol.~Phys.}}% % Solar Physics 
+\newcommand\sovast{\ref@jnl{Soviet~Ast.}}% % Soviet Astronomy 
+\newcommand\ssr{\ref@jnl{Space~Sci.~Rev.}}% % Space Science Reviews 
+\newcommand\zap{\ref@jnl{ZAp}}%       % Zeitschrift fuer Astrophysik 
+\newcommand\nat{\ref@jnl{Nature}}%  % Nature 
+\newcommand\iaucirc{\ref@jnl{IAU~Circ.}}% % IAU Cirulars 
+\newcommand\aplett{\ref@jnl{Astrophys.~Lett.}}%  % Astrophysics Letters 
+\newcommand\apspr{\ref@jnl{Astrophys.~Space~Phys.~Res.}}% % Astrophysics Space Physics Research 
+\newcommand\bain{\ref@jnl{Bull.~Astron.~Inst.~Netherlands}}% % Bulletin Astronomical Institute of the Netherlands 
+\newcommand\fcp{\ref@jnl{Fund.~Cosmic~Phys.}}%   % Fundamental Cosmic Physics 
+\newcommand\gca{\ref@jnl{Geochim.~Cosmochim.~Acta}}% % Geochimica Cosmochimica Acta 
+\newcommand\grl{\ref@jnl{Geophys.~Res.~Lett.}}%  % Geophysics Research Letters 
+\newcommand\jcp{\ref@jnl{J.~Chem.~Phys.}}%     % Journal of Chemical Physics 
+\newcommand\jgr{\ref@jnl{J.~Geophys.~Res.}}%     % Journal of Geophysics Research 
+\newcommand\jqsrt{\ref@jnl{J.~Quant.~Spec.~Radiat.~Transf.}}%   % Journal of Quantitiative Spectroscopy and Radiative Trasfer 
+\newcommand\memsai{\ref@jnl{Mem.~Soc.~Astron.~Italiana}}% % Mem. Societa Astronomica Italiana 
+\newcommand\nphysa{\ref@jnl{Nucl.~Phys.~A}}%     % Nuclear Physics A 
+\newcommand\physrep{\ref@jnl{Phys.~Rep.}}%       % Physics Reports 
+\newcommand\physscr{\ref@jnl{Phys.~Scr}}%        % Physica Scripta 
+\newcommand\planss{\ref@jnl{Planet.~Space~Sci.}}%  % Planetary Space Science 
+\newcommand\procspie{\ref@jnl{Proc.~SPIE}}%      % Proceedings of the SPIE 
+\let\astap=\aap 
+\let\apjlett=\apjl 
+\let\apjsupp=\apjs 
+\let\applopt=\ao 
+
+
+
+%%% EXAMPLE-LIKE ENVIRONMENTS
+\newcounter{ExampleCounter}[chapter]
+\renewcommand{\theExampleCounter}{\thechapter.\arabic{ExampleCounter}}
+\newmdenv[frametitle=Example \refstepcounter{ExampleCounter}\theExampleCounter, backgroundcolor=gray!20, linewidth=0, roundcorner=4pt]{example}
+
+%%% ADVECTIVE DERIVATIVE
+\DeclareDocumentCommand\advderivative{ s o m g d() }
+{ % Total derivative
+	% s: star for \flatfrac flat derivative
+	% o: optional n for nth derivative
+	% m: mandatory (x in df/dx)
+	% g: optional (f in df/dx)
+	% d: long-form d/dx(...)
+	\IfBooleanTF{#1}
+	{\let\fractype\flatfrac}
+	{\let\fractype\frac}
+	\IfNoValueTF{#4}
+	{
+		\IfNoValueTF{#5}
+		{\fractype{ {\rm D} \IfNoValueTF{#2}{}{^{#2}}}{{\rm D} #3\IfNoValueTF{#2}{}{^{#2}}}}
+		{\fractype{ {\rm D} \IfNoValueTF{#2}{}{^{#2}}}{{\rm D} #3\IfNoValueTF{#2}{}{^{#2}}} \argopen(#5\argclose)}
+	}
+	{\fractype{ {\rm D} \IfNoValueTF{#2}{}{^{#2}} #3}{ {\rm D} #4\IfNoValueTF{#2}{}{^{#2}}}}
+}
+\DeclareDocumentCommand\adv{}{\advderivative} % Shorthand for \advderivative
+
+
+
+
+%%% TiKZ Stuff
+
