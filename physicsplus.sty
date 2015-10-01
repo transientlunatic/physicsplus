@@ -1,4 +1,4 @@
-\ProvidesPackage{danielphysics}
+\ProvidesPackage{physicsplus}
 \usepackage{amssymb}					% AMS Symbol Font
 \usepackage{latexsym}					% LaTeX Symbol Font
 \usepackage{amsmath}					% For Mathematics Markup
@@ -8,14 +8,28 @@
 \let\endproof\relax
 \usepackage{amsthm}
 \usepackage[amssymb,derived,derivedinbase]{SIunits}	% Proper setting of SI Units
-\usepackage{hyperref}
+
 \usepackage{esint}                                      % Provides extra integral signs
 \usepackage{graphicx, tikz, float}
 \usepackage{pgfplots}
 \usepackage{ifthen, ifluatex}
 \usepackage{environ}
+\ifdefined\HCode
+    \usepackage[notrig]{physics}
+ \else
 \usepackage{physics}
-\usepackage[tikz]{mdframed}
+\fi
+
+
+
+%\usepackage[tikz]{mdframed}
+\usepackage{etoolbox}
+
+\usepackage[utf8]{inputenc}
+
+%%% COUNTER CHECK MACRO
+\newcommand\ifcounter[3]{\@ifundefined{c@#1}{#3}{#2}}
+
 %%% COLOURS
 \definecolor{eqncolour}{HTML}{9d261d}
 \definecolor{defcolour}{HTML}{049cdb}
@@ -47,6 +61,7 @@
 \providecommand{\dif}[1]{\ensuremath{\,\mathrm{d}{#1}}}	% Draw the infinitesimal marker
 \providecommand{\difp}[2]{\ensuremath{\, \mathrm{d}^{{#1}}{#2}}} % Draw an inf marker risen to a power
 \providecommand{\set}[1]{\ensuremath{ \{ #1 \} }}
+\providecommand{\uvec}[1]{\ensuremath{ \hat{#1} }}
 %%% MACROS FOR PHYSICS
 \providecommand{\fermi}{\ensuremath{ {\rm F} } }
 \providecommand{\kbolt}{\ensuremath{ k_{\rm B}}}
@@ -73,6 +88,16 @@
 \DeclareMathOperator{\conj}{conj}
 \DeclareMathOperator{\Eig}{Eig}
 %\providecommand{\conj}[1]{\ensuremath{\overbar{#1}}}
+
+%%% Active Characters
+
+\let\texttie~%
+\mathchardef\mymathtie=\mathcode`\~
+\mathcode`~="8000
+\renewcommand{~}[1]{
+  \relax\ifmmode\sb{\mathrm{#1}}%
+  \else\texttie#1\fi%
+}
 
 % Journal name macros
 \let\jnl@style=\rmfamily 
@@ -130,12 +155,18 @@
 \let\applopt=\ao 
 
 
-
-%%% EXAMPLE-LIKE ENVIRONMENTS
-\newcounter{ExampleCounter}[chapter]
-\renewcommand{\theExampleCounter}{\thechapter.\arabic{ExampleCounter}}
-\newmdenv[frametitle=Example \refstepcounter{ExampleCounter}\theExampleCounter, backgroundcolor=gray!20, linewidth=0, roundcorner=4pt]{example}
-
+% \@ifundefined{example}{
+% %%% EXAMPLE-LIKE ENVIRONMENTS
+% \ifcounter{chapter}{
+%   \newcounter{ExampleCounter}[chapter]
+%   \renewcommand{\theExampleCounter}{\thechapter.\arabic{ExampleCounter}}
+% }
+% {
+%   \newcounter{ExampleCounter}[section]
+%   \renewcommand{\theExampleCounter}{\thesection.\arabic{ExampleCounter}}
+% }
+% \newmdenv[frametitle=Example \refstepcounter{ExampleCounter}\theExampleCounter, backgroundcolor=gray!20, linewidth=0, roundcorner=4pt]{example}
+% }{}
 %%% ADVECTIVE DERIVATIVE
 \DeclareDocumentCommand\advderivative{ s o m g d() }
 { % Total derivative
@@ -157,8 +188,11 @@
 }
 \DeclareDocumentCommand\adv{}{\advderivative} % Shorthand for \advderivative
 
-
-
+%%% ASTRO SYMBOLS
+\newcommand\sun{\hbox{$\odot$}}
+\newcommand\earth{\hbox{$\oplus$}}
+\newcommand\degr{\hbox{$^\circ$}}
+\newcommand\parsec{\ensuremath{\mathrm{p}}}
 
 %%% TiKZ Stuff
 
