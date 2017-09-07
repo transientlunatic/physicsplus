@@ -1,14 +1,11 @@
 \ProvidesPackage{physicsplus}
-\usepackage{amssymb}					% AMS Symbol Font
+\usepackage[amssymb,derived,derivedinbase]{SIunits}	% Proper setting of SI Unit
+%\let\proof\relax
+%\let\endproof\relax
+\usepackage{amssymb, amsmath, amsthm}					% AMS Symbol Font
 \usepackage{latexsym}					% LaTeX Symbol Font
-\usepackage{amsmath}					% For Mathematics Markup
 \usepackage{color}					% Coloured Text
-\usepackage[usenames,dvipsnames]{xcolor}
-\let\proof\relax
-\let\endproof\relax
-\usepackage{amsthm}
-\usepackage[amssymb,derived,derivedinbase]{SIunits}	% Proper setting of SI Units
-
+%\usepackage[usenames]{xcolor}
 \usepackage{esint}                                      % Provides extra integral signs
 \usepackage{graphicx, tikz, float}
 \usepackage{pgfplots}
